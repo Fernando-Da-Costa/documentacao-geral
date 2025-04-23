@@ -6,7 +6,7 @@ AzureFlow é um pipeline de dados end-to-end que integra ferramentas avançadas 
 
 ---
 
-## Descrição do Projeto
+## Descrição do Projetos
 
 Este projeto visa automatizar o processamento e análise de grandes volumes de dados, promovendo tomadas de decisão baseadas em insights preditivos e visualizações interativas.
 
