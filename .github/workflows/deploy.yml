@@ -16,33 +16,17 @@ jobs:
 
 
     steps:
-      - name: ⬇️ Checkout do código
+      - name: Checkout
         uses: actions/checkout@v3
-        with:
-          persist-credentials: false  # Vamos usar o GITHUB_TOKEN manualmente
 
-      - name: ⚙️ Configura cache do NPM
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+      - name: Instalar dependências
+        run: npm install
 
-      - name: 📦 Instala dependências
-        run: npm ci
-
-      - name: 🏗️ Build do site Docusaurus
-        run: npm run build
-
-      - name: 🧑‍💻 Configura identidade do Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: 🚀 Deploy para GitHub Pages
+      - name: Build & Deploy
         env:
-          GIT_USER: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.PET_GITHUB }}
+          GIT_USER: github-actions[bot]
+          GIT_PASS: ${{ secrets.GH_TOKEN }}
         run: |
-          npm run deploy
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          npx docusaurus deploy --skip-build
