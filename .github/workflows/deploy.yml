@@ -3,37 +3,45 @@ name: Deploy Docusaurus to GitHub Pages
 on:
   push:
     branches:
-      - develop  
+      - develop  # Branch de origem do código-fonte
+
+permissions:
+  contents: write  # Necessário para fazer push na branch gh-pages
+  pages: write
 
 jobs:
   deploy:
+    name: Build and Deploy Docusaurus
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
+      - name: ⬇️ Checkout do código
         uses: actions/checkout@v3
         with:
-          persist-credentials: false
+          persist-credentials: false  # Vamos usar o GITHUB_TOKEN manualmente
 
-      - name: Instala Node.js
-        uses: actions/setup-node@v3
+      - name: ⚙️ Configura cache do NPM
+        uses: actions/cache@v3
         with:
-          node-version: '18'
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-      - name: Instala dependências
+      - name: 📦 Instala dependências
         run: npm ci
 
-      - name: Build do Docusaurus
+      - name: 🏗️ Build do site Docusaurus
         run: npm run build
 
-      - name: Configura identidade do Git
+      - name: 🧑‍💻 Configura identidade do Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Deploy para GitHub Pages
+      - name: 🚀 Deploy para GitHub Pages
         env:
           GIT_USER: ${{ github.actor }}
-          GIT_PASS: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx docusaurus deploy
+          npm run deploy
