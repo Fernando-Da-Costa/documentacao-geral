@@ -14,7 +14,7 @@ jobs:
     name: Build and Deploy Docusaurus
     runs-on: ubuntu-latest
 
-    
+
     steps:
       - name: ⬇️ Checkout do código
         uses: actions/checkout@v3
@@ -43,6 +43,6 @@ jobs:
       - name: 🚀 Deploy para GitHub Pages
         env:
           GIT_USER: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PET_GITHUB }}
         run: |
           npm run deploy
