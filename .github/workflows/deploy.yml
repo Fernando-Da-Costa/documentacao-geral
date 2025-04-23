@@ -63,11 +63,15 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
+          
+          # Verificar se há mudanças antes de tentar comitar
+          git diff --exit-code
+          if [ $? -eq 0 ]; then
+            echo "Nenhuma mudança detectada. Ignorando o commit e o deploy."
+            exit 0
+          fi
+          
           git add -A
           git commit -m "Deploy do site Docusaurus - $(date)"
           git push --force
-
-      - name: Deploy to GitHub Pages
-        run: |
-          echo "Iniciando o Deploy do Docusaurus..."
-          npx docusaurus deploy
+        
