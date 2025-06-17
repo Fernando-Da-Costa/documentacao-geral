@@ -12,7 +12,7 @@ const config = {
 
   organizationName: "fernando-da-costa", 
   projectName: "documentacao-geral",
-  deploymentBranch: "gh-pages", // Certifique-se de que está implantando na branch correta
+  deploymentBranch: "main", // Certifique-se de que está implantando na branch correta
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
