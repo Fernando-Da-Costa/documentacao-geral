@@ -1,0 +1,26 @@
+name: Create Pull Request
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  create-pr:
+    name: Create Pull Request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: develop
+          title: 'Pull Request from ${{ github.ref_name }}'
+          body: |
+            teste
+          branch: 'pr-${{ github.ref_name }}'
+          commit-message: 'chore: prepare PR from ${{ github.ref_name }}'
+          delete-branch: false 
