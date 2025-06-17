@@ -1,0 +1,1 @@
+Arquivo de teste para validar que o deploy não roda em branches feature, apenas o workflow de PR. 
