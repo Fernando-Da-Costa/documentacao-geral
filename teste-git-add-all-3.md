@@ -1,4 +1,4 @@
-# Teste git add . 2
+# Teste git add . 3
 
 Este arquivo foi criado para testar novamente o fluxo usando git add .
 - feature → develop (PR automático)
