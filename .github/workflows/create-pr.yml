@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  create-pr-for-develop:
+  create-pr-to-develop:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -47,24 +47,13 @@ jobs:
                 Pull Request automático criado a partir da branch \`${branchName}\`
                 
                 ## 🔄 Mudanças
-                - Alterações automáticas via CI/CD
+                - Criação de documentação.
                 - Branch: \`${branchName}\`
                 - Commit: \`${context.sha.substring(0, 7)}\`
                 - Autor: \`${context.actor}\`
                 
                 ## 📊 Commits Incluídos
                 ${commitList}
-                
-                ## 📝 Checklist de PR de Documentação
-                - [ ] O conteúdo está claro e objetivo para o público-alvo
-                - [ ] Estrutura e títulos seguem o padrão do projeto
-                - [ ] Documentação está atualizada e sem informações obsoletas
-                - [ ] Links, imagens e exemplos funcionam corretamente
-                - [ ] Formatação, ortografia e gramática revisadas
-                - [ ] Navegação e sidebar atualizadas (se necessário)
-                - [ ] Build e preview local testados e sem erros
-                - [ ] PR bem descrito e sem arquivos desnecessários
-                
                 ## ✅ Checklist
                 - [ ] Código revisado
                 - [ ] Testes passando
@@ -77,7 +66,7 @@ jobs:
                 
                 ## 🔗 Próximos Passos
                 - Após aprovação, este PR será mergeado para \`develop\`
-                - Um PR automático de \`develop\` para \`main\` será criado
+                - Um PR automático de \`develop\` para \`main\` será criado automaticamente
                 
                 ---
                 *PR criado automaticamente pelo GitHub Actions*`,
