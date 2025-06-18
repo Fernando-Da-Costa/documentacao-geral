@@ -1,3 +1,7 @@
+---
+title: Estratégia de Particionamento Baseada em Arquivos
+---
+
 #
 ## 🚀 Projeto Real: Spark + Databricks + Terraform + Azure
 AzureFlow é um pipeline de dados end-to-end que integra ferramentas avançadas do Azure para ingestão, armazenamento, preparação, treinamento, modelagem e visualização de dados.

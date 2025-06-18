@@ -1,3 +1,7 @@
+---
+title: AzureFlow - Solução Inteligente de Análise de Dados
+---
+
 # AzureFlow: Solução Inteligente de Análise de Dados
 
 AzureFlow é um pipeline de dados end-to-end que integra ferramentas avançadas do Azure para ingestão, armazenamento, preparação, treinamento, modelagem e visualização de dados. Ele é projetado para oferecer análises rápidas, seguras e eficazes.
