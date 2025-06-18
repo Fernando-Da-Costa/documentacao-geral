@@ -1,13 +1,16 @@
 name: Deploy Docusaurus to GitHub Pages
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - main
   workflow_dispatch:
 
 jobs:
   deploy:
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'develop-to-main')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,4 +31,15 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build 
+          publish_dir: ./build
+
+      - name: Notificar Deploy Concluído
+        if: always()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ":rocket: *Deploy Concluído!*\nO site foi atualizado no GitHub Pages após o merge do PR de release.\nAcesse: https://fernando-da-costa.github.io/documentacao-geral/"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
