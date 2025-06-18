@@ -64,3 +64,4 @@ jobs:
               console.log('PR de develop para main já existe');
               console.log(`PR existente: #${existingPRs[0].number}`);
             } 
+            
