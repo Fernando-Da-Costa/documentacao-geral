@@ -1,6 +1,6 @@
-# Teste Correto do Fluxo
+# Teste git add .
 
-Este arquivo foi criado para testar o fluxo corrigido de PRs automáticos:
+Este arquivo foi criado para testar o fluxo usando git add .
 - feature → develop (PR automático)
 - develop → main (PR automático após merge)
 
