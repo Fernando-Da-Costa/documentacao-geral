@@ -16,10 +16,13 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            const branchName = context.ref.replace('refs/heads/', '');
+            
+            // Verificar se já existe um PR para esta branch
             const { data: existingPRs } = await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: `${context.repo.owner}:${context.ref.replace('refs/heads/', '')}`,
+              head: `${context.repo.owner}:${branchName}`,
               base: 'main'
             });
             
@@ -27,13 +30,13 @@ jobs:
               const pr = await github.rest.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: `feat: ${context.ref.replace('refs/heads/', '')}`,
+                title: `feat: ${branchName}`,
                 body: `## 📝 Descrição
-                Pull Request automático criado a partir da branch \`${context.ref.replace('refs/heads/', '')}\`
+                Pull Request automático criado a partir da branch \`${branchName}\`
                 
                 ## 🔄 Mudanças
                 - Alterações automáticas via CI/CD
-                - Branch: \`${context.ref.replace('refs/heads/', '')}\`
+                - Branch: \`${branchName}\`
                 - Commit: \`${context.sha}\`
                 
                 ## ✅ Checklist
@@ -43,7 +46,7 @@ jobs:
                 
                 ---
                 *PR criado automaticamente pelo GitHub Actions*`,
-                head: context.ref.replace('refs/heads/', ''),
+                head: branchName,
                 base: 'main'
               });
               
