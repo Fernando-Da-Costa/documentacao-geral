@@ -1,0 +1,44 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Build check
+        run: npm run build
+
+      - name: Comment PR
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const isReleasePR = context.payload.pull_request.base.ref === 'main' && context.payload.pull_request.head.ref === 'develop';
+            const message = isReleasePR 
+              ? '🚀 **Release PR validado com sucesso!**\n\n- ✅ Lint passou\n- ✅ Build funcionou\n\n**Pronto para deploy em produção!** 🎉'
+              : '✅ **Validação concluída com sucesso!**\n\n- ✅ Lint passou\n- ✅ Build funcionou\n\nPR pronto para merge! 🚀';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            }) 

@@ -1,1 +1,0 @@
-Arquivo de teste para verificar o campo de descrição do PR automático. 
