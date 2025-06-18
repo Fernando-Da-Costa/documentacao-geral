@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  create-pr-develop:
+  create-pr-for-develop:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -54,6 +54,16 @@ jobs:
                 
                 ## 📊 Commits Incluídos
                 ${commitList}
+                
+                ## 📝 Checklist de PR de Documentação
+                - [ ] O conteúdo está claro e objetivo para o público-alvo
+                - [ ] Estrutura e títulos seguem o padrão do projeto
+                - [ ] Documentação está atualizada e sem informações obsoletas
+                - [ ] Links, imagens e exemplos funcionam corretamente
+                - [ ] Formatação, ortografia e gramática revisadas
+                - [ ] Navegação e sidebar atualizadas (se necessário)
+                - [ ] Build e preview local testados e sem erros
+                - [ ] PR bem descrito e sem arquivos desnecessários
                 
                 ## ✅ Checklist
                 - [ ] Código revisado
