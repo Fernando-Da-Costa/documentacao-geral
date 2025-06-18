@@ -27,6 +27,18 @@ jobs:
             });
             
             if (existingPRs.length === 0) {
+              // Obter informações do último commit
+              const { data: commits } = await github.rest.repos.listCommits({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha: branchName,
+                per_page: 5
+              });
+              
+              const commitList = commits.map(commit => 
+                `- \`${commit.sha.substring(0, 7)}\` ${commit.commit.message.split('\n')[0]}`
+              ).join('\n');
+              
               const pr = await github.rest.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -37,12 +49,25 @@ jobs:
                 ## 🔄 Mudanças
                 - Alterações automáticas via CI/CD
                 - Branch: \`${branchName}\`
-                - Commit: \`${context.sha}\`
+                - Commit: \`${context.sha.substring(0, 7)}\`
+                - Autor: \`${context.actor}\`
+                
+                ## 📊 Commits Incluídos
+                ${commitList}
                 
                 ## ✅ Checklist
                 - [ ] Código revisado
                 - [ ] Testes passando
                 - [ ] Documentação atualizada
+                - [ ] Sem conflitos de merge
+                
+                ## 🏷️ Labels
+                - \`automated\`
+                - \`feature\`
+                
+                ## 🔗 Próximos Passos
+                - Após aprovação, este PR será mergeado para \`develop\`
+                - Um PR automático de \`develop\` para \`main\` será criado
                 
                 ---
                 *PR criado automaticamente pelo GitHub Actions*`,
@@ -57,7 +82,9 @@ jobs:
                 labels: ['automated', 'feature']
               });
               
-              console.log(`Pull Request #${pr.data.number} created successfully!`);
+              console.log(`✅ Pull Request #${pr.data.number} criado com sucesso!`);
+              console.log(`📋 Branch: ${branchName} → develop`);
             } else {
-              console.log('Pull Request already exists for this branch');
+              console.log('⚠️ Pull Request já existe para esta branch');
+              console.log(`📋 PR existente: #${existingPRs[0].number}`);
             } 

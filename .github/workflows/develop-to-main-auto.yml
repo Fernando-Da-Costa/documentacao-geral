@@ -1,0 +1,106 @@
+name: Auto Create PR from Develop to Main
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [develop]
+
+jobs:
+  create-develop-to-main-pr:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: develop
+
+      - name: Create PR from Develop to Main
+        uses: actions/github-script@v6
+        with:
+          script: |
+            // Verificar se já existe um PR de develop para main
+            const { data: existingPRs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: 'develop',
+              base: 'main'
+            });
+            
+            if (existingPRs.length === 0) {
+              // Obter informações do último commit em develop
+              const { data: developCommits } = await github.rest.repos.listCommits({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha: 'develop',
+                per_page: 1
+              });
+              
+              const lastCommit = developCommits[0];
+              const mergedPR = context.payload.pull_request;
+              
+              const pr = await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🚀 Release: Develop to Main - ${new Date().toISOString().split('T')[0]}`,
+                body: `## 🚀 Release Automático: Develop → Main
+
+### 📋 Resumo
+Pull Request automático criado após merge de feature para develop.
+
+### 🔄 Detalhes do Merge Anterior
+- **PR Original**: #${mergedPR.number} - ${mergedPR.title}
+- **Branch Origem**: ${mergedPR.head.ref}
+- **Autor**: ${mergedPR.user.login}
+- **Data do Merge**: ${new Date(mergedPR.merged_at).toLocaleString('pt-BR')}
+
+### 📊 Commits Incluídos
+- **Último Commit**: ${lastCommit.sha.substring(0, 7)}
+- **Mensagem**: ${lastCommit.commit.message}
+- **Autor**: ${lastCommit.commit.author.name}
+
+### ✅ Checklist de Release
+- [ ] ✅ Código revisado e aprovado
+- [ ] ✅ Testes passando em develop
+- [ ] ✅ Documentação atualizada
+- [ ] ✅ Sem conflitos de merge
+- [ ] ✅ Build de produção bem-sucedido
+
+### 🏷️ Labels Aplicadas
+- `release`
+- `automated`
+- `develop-to-main`
+
+### 📝 Notas
+- Este PR foi criado automaticamente pelo GitHub Actions
+- Merge automático habilitado após aprovação
+- Release para produção
+
+---
+*PR criado automaticamente após merge de feature para develop*`,
+                head: 'develop',
+                base: 'main'
+              });
+              
+              // Adicionar labels
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.data.number,
+                labels: ['release', 'automated', 'develop-to-main']
+              });
+              
+              // Adicionar reviewers (opcional - descomente se necessário)
+              // await github.rest.pulls.requestReviewers({
+              //   owner: context.repo.owner,
+              //   repo: context.repo.repo,
+              //   pull_number: pr.data.number,
+              //   reviewers: ['seu-usuario-aqui']
+              // });
+              
+              console.log(`🚀 Release PR #${pr.data.number} criado com sucesso!`);
+              console.log(`📊 PR Original: #${mergedPR.number} - ${mergedPR.title}`);
+            } else {
+              console.log('⚠️ PR de develop para main já existe');
+              console.log(`📋 PR existente: #${existingPRs[0].number}`);
+            } 
