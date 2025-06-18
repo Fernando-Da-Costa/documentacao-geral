@@ -8,7 +8,7 @@ Este arquivo foi criado para testar o fluxo completo com workflows separados par
 2. 🔄 **PR para Develop**: Será criado manualmente
 3. 🔄 **PR Automático**: Develop → Main (criado automaticamente pelo workflow)
 4. 🔄 **Deploy Automático**: GitHub Pages (executado pelo workflow separado)
-
+dsdad
 ## Detalhes do teste:
 - **Branch**: feature/teste-workflow-separado
 - **Data**: $(Get-Date)
