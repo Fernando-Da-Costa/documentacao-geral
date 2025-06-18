@@ -23,7 +23,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: `${context.repo.owner}:${branchName}`,
-              base: 'main'
+              base: 'develop'
             });
             
             if (existingPRs.length === 0) {
@@ -47,7 +47,7 @@ jobs:
                 ---
                 *PR criado automaticamente pelo GitHub Actions*`,
                 head: branchName,
-                base: 'main'
+                base: 'develop'
               });
               
               await github.rest.issues.addLabels({

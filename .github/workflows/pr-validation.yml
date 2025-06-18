@@ -31,9 +31,14 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           script: |
+            const isReleasePR = context.payload.pull_request.base.ref === 'main' && context.payload.pull_request.head.ref === 'develop';
+            const message = isReleasePR 
+              ? '🚀 **Release PR validado com sucesso!**\n\n- ✅ Lint passou\n- ✅ Build funcionou\n\n**Pronto para deploy em produção!** 🎉'
+              : '✅ **Validação concluída com sucesso!**\n\n- ✅ Lint passou\n- ✅ Build funcionou\n\nPR pronto para merge! 🚀';
+            
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '✅ **Validação concluída com sucesso!**\n\n- ✅ Lint passou\n- ✅ Build funcionou\n\nPR pronto para merge! 🚀'
+              body: message
             }) 
