@@ -1,0 +1,43 @@
+name: Create Pull Request
+
+on:
+  push:
+    branches: [feature/**]
+  workflow_dispatch:
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feat: automatic PR from feature branch"
+          title: "feat: ${{ github.ref_name }}"
+          body: |
+            ## 📝 Descrição
+            Pull Request automático criado a partir da branch `${{ github.ref_name }}`
+            
+            ## 🔄 Mudanças
+            - Alterações automáticas via CI/CD
+            - Branch: `${{ github.ref_name }}`
+            - Commit: `${{ github.sha }}`
+            
+            ## ✅ Checklist
+            - [ ] Código revisado
+            - [ ] Testes passando
+            - [ ] Documentação atualizada
+            
+            ---
+            *PR criado automaticamente pelo GitHub Actions*
+          branch: main
+          delete-branch: true
+          labels: |
+            automated
+            feature 
