@@ -1,3 +1,4 @@
+/* global describe, test, expect */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import HomepageFeatures from './index';
