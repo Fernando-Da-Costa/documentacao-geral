@@ -33,7 +33,7 @@ jobs:
         run: echo "Site publicado em: https://fernando-da-costa.github.io/documentacao-geral/"
 
       - name: Notificar Deploy Concluído
-        if: success()
+        if: ${{ success() }}
         uses: slackapi/slack-github-action@v1.24.0
         with:
           payload: |
@@ -44,7 +44,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notificar Falha no Deploy
-        if: failure()
+        if: ${{ failure() }}
         uses: slackapi/slack-github-action@v1.24.0
         with:
           payload: |
