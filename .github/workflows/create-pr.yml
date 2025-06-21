@@ -93,7 +93,7 @@ jobs:
 
   validate-code:
     runs-on: ubuntu-latest
-    needs: create-pr-to-develop # Garante que a validação só rode se o PR for criado
+    # A linha 'needs' foi removida, pois os jobs são independentes
     if: github.event_name == 'pull_request' # Garante que este job só rode em eventos de PR
     steps:
       - name: Checkout repo
