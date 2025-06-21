@@ -64,14 +64,3 @@ jobs:
               console.log('PR de develop para main já existe');
               console.log(`PR existente: #${existingPRs[0].number}`);
             } 
-
-      - name: Notificar PR Criado
-        if: always()
-        uses: slackapi/slack-github-action@v1.24.0
-        with:
-          payload: |
-            {
-              "text": ":rocket: *PR de Release Criado!*\n\nUm PR foi mergeado para a branch *develop* e um novo PR de release foi criado automaticamente.\n\n:octocat: *Repositório:* ${{ github.repository }}\n:link: *Veja no GitHub:* https://github.com/${{ github.repository }}/pulls\n:globe_with_meridians: *Site atual:* https://fernando-da-costa.github.io/documentacao-geral/\n:calendar: *Data:* ${{ github.event.head_commit.timestamp }}\n\n:white_check_mark: Após aprovação e merge, o site será atualizado automaticamente!"
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
