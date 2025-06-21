@@ -1,13 +1,16 @@
-name: Create Pull Request
+name: Create and Validate Pull Request
 
 on:
   push:
     branches: [feature/**]
+  pull_request: # Adicionado para rodar em eventos de PR
+    branches: [develop]
   workflow_dispatch:
 
 jobs:
   create-pr-to-develop:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' # Garante que este job só rode no push
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -87,3 +90,23 @@ jobs:
               console.log('⚠️ Pull Request já existe para esta branch');
               console.log(`📋 PR existente: #${existingPRs[0].number}`);
             } 
+
+  validate-code:
+    runs-on: ubuntu-latest
+    needs: create-pr-to-develop # Garante que a validação só rode se o PR for criado
+    if: github.event_name == 'pull_request' # Garante que este job só rode em eventos de PR
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js with Cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Validation
+        run: npm run validate 
