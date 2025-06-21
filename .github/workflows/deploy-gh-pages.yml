@@ -29,9 +29,6 @@ jobs:
           publish_branch: gh-pages
           publish_dir: ./build
 
-      - name: Show deployed site URL
-        run: echo "Site publicado em: https://fernando-da-costa.github.io/documentacao-geral/"
-
       - name: Notificar Deploy Concluído
         if: success()
         uses: slackapi/slack-github-action@v1.24.0
