@@ -1,2 +1,3 @@
 - **Objetivo:** Validar o workflow de criação de PR.
-- **Extra:** Adicionando validação automática ao PR. 
+- **Extra:** Adicionando validação automática ao PR.
+- **Correção:** Ajustando o gatilho da validação. 
