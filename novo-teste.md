@@ -1,5 +1,2 @@
-# Novo Teste de Workflow
-
-- **Branch:** `feature/novo-teste-workflow`
-- **Data:** $(Get-Date)
-- **Objetivo:** Validar o workflow de criação de PR. 
+- **Objetivo:** Validar o workflow de criação de PR.
+- **Extra:** Adicionando validação automática ao PR. 
